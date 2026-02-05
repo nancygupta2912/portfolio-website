@@ -1,137 +1,127 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Home, Cpu, FolderKanban, Mail, Sun, Moon } from "lucide-react"
-import { useTheme } from "./theme-context"
+import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
 
-const navItems = [
-  { icon: Home, label: "Home", href: "#home" },
-  { icon: Cpu, label: "Skills", href: "#skills" },
-  { icon: FolderKanban, label: "Projects", href: "#projects" },
-  { icon: Mail, label: "Contact", href: "#contact" },
-]
-
-function DockIcon({ icon: Icon, label, href }) {
-  const [isHovered, setIsHovered] = useState(false)
-
-  return (
-    <motion.a
-      href={href}
-      className="relative flex flex-col items-center justify-center"
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      whileHover={{ scale: 1.4, y: -8 }}
-      transition={{ type: "spring", stiffness: 400, damping: 17 }}
-    >
-      <AnimatePresence>
-        {isHovered && (
-          <motion.span
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: -8 }}
-            exit={{ opacity: 0, y: 5 }}
-            className="absolute -top-8 text-xs font-mono text-neon-pink whitespace-nowrap"
-          >
-            {label}
-          </motion.span>
-        )}
-      </AnimatePresence>
-      <div
-        className="p-3 rounded-xl transition-all duration-300"
-        style={{
-          boxShadow: isHovered
-            ? "0 0 20px var(--neon-pink), 0 0 40px rgba(255,0,127,0.3)"
-            : "none",
-          background: isHovered ? "rgba(255,0,127,0.15)" : "transparent",
-        }}
-      >
-        <Icon
-          size={22}
-          style={{ color: isHovered ? "var(--neon-pink)" : "rgba(255,255,255,0.6)" }}
-        />
-      </div>
-    </motion.a>
-  )
-}
-
-function BrandLogo() {
-  const [isHovered, setIsHovered] = useState(false)
-
-  return (
-    <motion.div
-      className="fixed top-6 left-6 z-50"
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-    >
-      <motion.span
-        className="text-xl font-bold font-mono text-neon-cyan cursor-default select-none"
-        animate={
-          isHovered
-            ? {
-                x: [0, -2, 2, -2, 0],
-                textShadow: [
-                  "0 0 10px var(--neon-cyan)",
-                  "2px 0 var(--neon-pink), -2px 0 var(--neon-cyan)",
-                  "-2px 0 var(--neon-pink), 2px 0 var(--neon-cyan)",
-                  "0 0 10px var(--neon-cyan)",
-                ],
-              }
-            : {}
-        }
-        transition={{ duration: 0.3, repeat: isHovered ? Number.POSITIVE_INFINITY : 0, repeatType: "loop" }}
-      >
-        {"<Priyanka.Dev />"}
-      </motion.span>
-    </motion.div>
-  )
-}
-
-function ThemeToggle() {
-  const { isStealth, toggleTheme } = useTheme()
-
-  return (
-    <motion.button
-      onClick={toggleTheme}
-      className="fixed top-6 right-6 z-50 p-3 rounded-full glass cursor-pointer"
-      whileHover={{ scale: 1.1, rotate: 180 }}
-      whileTap={{ scale: 0.9 }}
-      transition={{ type: "spring", stiffness: 300, damping: 15 }}
-      style={{
-        boxShadow: `0 0 15px ${isStealth ? "rgba(255,255,255,0.3)" : "rgba(255,87,34,0.5)"}`,
-      }}
-      aria-label={isStealth ? "Switch to Cyberpunk mode" : "Switch to Stealth mode"}
-    >
-      <motion.div
-        animate={{ rotate: isStealth ? 360 : 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        {isStealth ? (
-          <Sun size={18} style={{ color: "#FFFFFF" }} />
-        ) : (
-          <Moon size={18} style={{ color: "var(--neon-orange)" }} />
-        )}
-      </motion.div>
-    </motion.button>
-  )
-}
+const navLinks = [
+  { label: "About", href: "#about" },
+  { label: "Skills", href: "#skills" },
+  { label: "Projects", href: "#projects" },
+  { label: "Contact", href: "#contact" },
+];
 
 export default function Navigation() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+
+      const sections = navLinks.map((l) => l.href.replace("#", ""));
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 150) {
+            setActiveSection(sections[i]);
+            return;
+          }
+        }
+      }
+      setActiveSection("");
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <>
-      <BrandLogo />
-      <ThemeToggle />
-      <motion.nav
-        className="fixed bottom-6 left-1/2 z-50 glass-strong rounded-2xl px-6 py-3"
-        initial={{ y: 100, x: "-50%", opacity: 0 }}
-        animate={{ y: 0, x: "-50%", opacity: 1 }}
-        transition={{ delay: 0.5, type: "spring", stiffness: 200, damping: 20 }}
-      >
-        <div className="flex items-center gap-2">
-          {navItems.map((item) => (
-            <DockIcon key={item.label} {...item} />
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-background/80 backdrop-blur-lg border-b border-border"
+          : "bg-transparent"
+      }`}
+    >
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a
+          href="#"
+          className="font-mono text-sm font-bold tracking-tight text-primary transition-colors hover:text-primary/80"
+        >
+          {"<Dev />"}
+        </a>
+
+        {/* Desktop nav */}
+        <ul className="hidden items-center gap-8 md:flex">
+          {navLinks.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                className={`font-mono text-xs tracking-wide uppercase transition-colors duration-200 ${
+                  activeSection === link.href.replace("#", "")
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <span className="text-primary mr-1">
+                  {String(navLinks.indexOf(link) + 1).padStart(2, "0")}.
+                </span>
+                {link.label}
+              </a>
+            </li>
           ))}
+          <li>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded border border-primary px-4 py-2 font-mono text-xs text-primary transition-all duration-200 hover:bg-primary/10"
+            >
+              Resume
+            </a>
+          </li>
+        </ul>
+
+        {/* Mobile menu button */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="text-foreground md:hidden"
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+        >
+          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </nav>
+
+      {/* Mobile nav */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-background/95 backdrop-blur-lg md:hidden">
+          <nav className="flex flex-col items-center gap-8">
+            {navLinks.map((link, i) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="font-mono text-lg text-foreground transition-colors hover:text-primary"
+              >
+                <span className="text-primary mr-2 text-sm">
+                  {String(i + 1).padStart(2, "0")}.
+                </span>
+                {link.label}
+              </a>
+            ))}
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 rounded border border-primary px-8 py-3 font-mono text-sm text-primary transition-all hover:bg-primary/10"
+            >
+              Resume
+            </a>
+          </nav>
         </div>
-      </motion.nav>
-    </>
-  )
+      )}
+    </header>
+  );
 }

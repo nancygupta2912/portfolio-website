@@ -1,300 +1,125 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-
-const stats = [
-  { label: "Frontend", value: 95 },
-  { label: "Backend", value: 92 },
-  { label: "DevOps", value: 85 },
-  { label: "UI/UX", value: 88 },
-  { label: "Speed", value: 90 },
-]
-
-function RadarChart() {
-  const cx = 150
-  const cy = 150
-  const radius = 110
-  const levels = 5
-  const sides = stats.length
-  const angleStep = (Math.PI * 2) / sides
-  const startAngle = -Math.PI / 2
-
-  function getPoint(angle, r) {
-    return {
-      x: cx + r * Math.cos(angle),
-      y: cy + r * Math.sin(angle),
-    }
-  }
-
-  // Grid lines
-  const gridPaths = Array.from({ length: levels }).map((_, level) => {
-    const r = (radius / levels) * (level + 1)
-    const points = Array.from({ length: sides })
-      .map((_, i) => {
-        const p = getPoint(startAngle + i * angleStep, r)
-        return `${p.x},${p.y}`
-      })
-      .join(" ")
-    return points
-  })
-
-  // Data points
-  const dataPoints = stats
-    .map((stat, i) => {
-      const r = (stat.value / 100) * radius
-      const p = getPoint(startAngle + i * angleStep, r)
-      return `${p.x},${p.y}`
-    })
-    .join(" ")
-
-  // Axis lines
-  const axes = stats.map((_, i) => {
-    const p = getPoint(startAngle + i * angleStep, radius)
-    return { x1: cx, y1: cy, x2: p.x, y2: p.y }
-  })
-
-  // Labels
-  const labels = stats.map((stat, i) => {
-    const p = getPoint(startAngle + i * angleStep, radius + 22)
-    return { ...stat, x: p.x, y: p.y }
-  })
-
-  return (
-    <motion.svg
-      viewBox="0 0 300 300"
-      className="w-full max-w-xs mx-auto"
-      initial={{ opacity: 0, scale: 0.8 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-    >
-      {/* Grid */}
-      {gridPaths.map((points, i) => (
-        <polygon
-          key={i}
-          points={points}
-          fill="none"
-          stroke="rgba(0,255,255,0.1)"
-          strokeWidth={0.5}
-        />
-      ))}
-
-      {/* Axes */}
-      {axes.map((axis, i) => (
-        <line
-          key={i}
-          x1={axis.x1}
-          y1={axis.y1}
-          x2={axis.x2}
-          y2={axis.y2}
-          stroke="rgba(0,255,255,0.1)"
-          strokeWidth={0.5}
-        />
-      ))}
-
-      {/* Data shape */}
-      <motion.polygon
-        points={dataPoints}
-        fill="rgba(255,0,127,0.15)"
-        stroke="var(--neon-pink)"
-        strokeWidth={2}
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.5, duration: 1 }}
-        style={{ filter: "drop-shadow(0 0 8px rgba(255,0,127,0.5))" }}
-      />
-
-      {/* Data points */}
-      {stats.map((stat, i) => {
-        const r = (stat.value / 100) * radius
-        const p = getPoint(startAngle + i * angleStep, r)
-        return (
-          <motion.circle
-            key={stat.label}
-            cx={p.x}
-            cy={p.y}
-            r={3}
-            fill="var(--neon-pink)"
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.8 + i * 0.1 }}
-            style={{ filter: "drop-shadow(0 0 5px rgba(255,0,127,0.8))" }}
-          />
-        )
-      })}
-
-      {/* Labels */}
-      {labels.map((label) => (
-        <text
-          key={label.label}
-          x={label.x}
-          y={label.y}
-          textAnchor="middle"
-          dominantBaseline="central"
-          fill="var(--neon-cyan)"
-          fontSize={10}
-          fontFamily="monospace"
-        >
-          {label.label}
-        </text>
-      ))}
-    </motion.svg>
-  )
-}
-
-function ChibiAvatar() {
-  return (
-    <motion.div
-      className="absolute -top-8 right-4 md:right-8"
-      animate={{ y: [0, -6, 0] }}
-      transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-    >
-      <div className="relative w-16 h-16">
-        {/* Simple chibi figure using CSS */}
-        <div
-          className="w-12 h-12 rounded-full overflow-hidden mx-auto"
-          style={{
-            border: "2px solid var(--neon-pink)",
-            boxShadow: "0 0 10px rgba(255,0,127,0.4)",
-          }}
-        >
-          <img
-            src="/avatar.jpg"
-            alt=""
-            className="w-full h-full object-cover"
-            crossOrigin="anonymous"
-          />
-        </div>
-        {/* Legs animation */}
-        <motion.div
-          className="flex justify-center gap-1 -mt-1"
-          animate={{ rotate: [0, 5, -5, 0] }}
-          transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
-        >
-          <div className="w-1.5 h-4 rounded-full" style={{ background: "var(--neon-pink)" }} />
-          <div className="w-1.5 h-4 rounded-full" style={{ background: "var(--neon-pink)" }} />
-        </motion.div>
-      </div>
-    </motion.div>
-  )
-}
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 export default function AboutSection() {
-  const characterInfo = [
-    { key: "Class", value: "Technomancer (Full Stack Dev)" },
-    { key: "Origin", value: "Earth / India" },
-    { key: "Level", value: "Senior Architect" },
-    { key: "XP", value: "6+ Years of Battle" },
-    { key: "Special", value: "Turning Coffee into Clean Code" },
-  ]
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.2 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const technologies = [
+    "JavaScript (ES6+)",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Tailwind CSS",
+    "Node.js",
+    "Python",
+    "PostgreSQL",
+  ];
 
   return (
-    <section id="about" className="relative py-32 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+    <section id="about" ref={ref} className="py-24 px-6 md:py-32">
+      <div className="mx-auto max-w-5xl">
+        <div
+          className={`transition-all duration-700 ${
+            visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          }`}
         >
-          <h2 className="text-sm font-mono uppercase tracking-[0.3em] mb-3"
-            style={{ color: "var(--neon-pink)" }}>
-            // Character Profile
+          <h2 className="mb-12 flex items-center gap-4 text-2xl font-bold text-foreground md:text-3xl">
+            <span className="font-mono text-lg text-primary md:text-xl">
+              01.
+            </span>
+            About Me
+            <span className="h-px flex-1 bg-border" />
           </h2>
-          <h3 className="text-4xl md:text-5xl font-bold"
-            style={{ color: "#FFFFFF" }}>
-            Character Stats
-          </h3>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Radar Chart */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+        <div className="grid gap-12 md:grid-cols-[3fr_2fr]">
+          <div
+            className={`transition-all duration-700 delay-200 ${
+              visible
+                ? "translate-y-0 opacity-100"
+                : "translate-y-8 opacity-0"
+            }`}
           >
-            <RadarChart />
-          </motion.div>
+            <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+              <p>
+                Hello! I'm a passionate frontend developer who loves creating
+                things that live on the internet. My interest in web development
+                started back in 2016 when I decided to try editing custom
+                Tumblr themes -- turns out hacking together a custom reblog
+                button taught me a lot about HTML and CSS.
+              </p>
+              <p>
+                Fast-forward to today, and I've had the privilege of working at
+                a{" "}
+                <span className="text-primary">start-up</span>,{" "}
+                <span className="text-primary">
+                  a large corporation
+                </span>
+                , and{" "}
+                <span className="text-primary">
+                  a student-led design studio
+                </span>
+                . My main focus these days is building accessible, inclusive
+                products and digital experiences for a variety of clients.
+              </p>
+              <p>
+                Here are a few technologies I've been working with recently:
+              </p>
+            </div>
 
-          {/* Character Sheet */}
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <ChibiAvatar />
-            <div
-              className="glass-strong rounded-2xl p-8"
-              style={{ border: "1px solid rgba(255,0,127,0.15)" }}
-            >
-              <h4
-                className="text-lg font-mono mb-6"
-                style={{ color: "var(--neon-cyan)" }}
-              >
-                {">"} CHARACTER_SHEET.log
-              </h4>
-
-              <div className="flex flex-col gap-4">
-                {characterInfo.map((info, i) => (
-                  <motion.div
-                    key={info.key}
-                    className="flex flex-col gap-1"
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                  >
-                    <span
-                      className="text-xs font-mono uppercase tracking-wider"
-                      style={{ color: "var(--neon-pink)" }}
-                    >
-                      [{info.key}]
-                    </span>
-                    <span
-                      className="text-base"
-                      style={{ color: "rgba(255,255,255,0.85)" }}
-                    >
-                      {info.value}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* XP Bar */}
-              <div className="mt-8">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-mono" style={{ color: "var(--neon-cyan)" }}>
-                    EXPERIENCE
-                  </span>
-                  <span className="text-xs font-mono" style={{ color: "var(--neon-pink)" }}>
-                    87,420 / 100,000 XP
-                  </span>
-                </div>
-                <div
-                  className="h-2 rounded-full overflow-hidden"
-                  style={{ background: "rgba(255,255,255,0.05)" }}
+            <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2">
+              {technologies.map((tech) => (
+                <li
+                  key={tech}
+                  className="flex items-center gap-2 font-mono text-xs text-muted-foreground"
                 >
-                  <motion.div
-                    className="h-full rounded-full"
-                    style={{
-                      background: "linear-gradient(90deg, var(--neon-pink), var(--neon-cyan))",
-                      boxShadow: "0 0 10px rgba(255,0,127,0.5)",
-                    }}
-                    initial={{ width: 0 }}
-                    whileInView={{ width: "87%" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
-                  />
-                </div>
+                  <span className="text-primary">{">"}</span>
+                  {tech}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div
+            className={`transition-all duration-700 delay-400 ${
+              visible
+                ? "translate-y-0 opacity-100"
+                : "translate-y-8 opacity-0"
+            }`}
+          >
+            <div className="group relative mx-auto w-full max-w-[280px]">
+              {/* Accent border offset */}
+              <div className="absolute -right-4 -bottom-4 h-full w-full rounded border-2 border-primary transition-all duration-300 group-hover:-right-3 group-hover:-bottom-3" />
+              {/* Overlay */}
+              <div className="absolute inset-0 z-10 rounded bg-primary/20 transition-colors duration-300 group-hover:bg-transparent" />
+              {/* Image */}
+              <div className="relative overflow-hidden rounded">
+                <Image
+                  src="/avatar.jpg"
+                  alt="Profile photo"
+                  width={280}
+                  height={350}
+                  className="rounded object-cover grayscale transition-all duration-300 group-hover:grayscale-0"
+                />
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

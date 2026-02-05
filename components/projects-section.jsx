@@ -1,252 +1,334 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion"
-import { ExternalLink, Server, ChevronLeft, ChevronRight } from "lucide-react"
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { ExternalLink, Github, Folder } from "lucide-react";
 
-const projects = [
+const featuredProjects = [
   {
-    title: "NeoShop",
-    katakana: "ネオショップ",
-    description: "A next-gen e-commerce platform with AI-driven product recommendations and real-time inventory management.",
-    tags: ["React", "Node.js", "PostgreSQL"],
-    server: "Node.js",
-    status: "Deployed",
-    color: "var(--neon-pink)",
+    title: "Analytics Dashboard",
+    description:
+      "A comprehensive web analytics dashboard with real-time data visualization, custom reporting, and team collaboration features. Built with a focus on performance and accessibility.",
+    image: "/project-1.jpg",
+    tech: ["React", "Next.js", "TypeScript", "D3.js", "PostgreSQL"],
+    github: "https://github.com",
+    live: "https://example.com",
+    align: "right",
   },
   {
-    title: "CloudForge",
-    katakana: "クラウドフォージ",
-    description: "Infrastructure-as-code toolkit enabling one-click deployment of microservices across multi-cloud environments.",
-    tags: ["Go", "Docker", "AWS"],
-    server: "Go / Docker",
-    status: "Deployed",
-    color: "var(--neon-cyan)",
+    title: "E-Commerce Platform",
+    description:
+      "A full-featured online store with product search, cart management, secure checkout, and an admin dashboard. Includes real-time inventory tracking and order management.",
+    image: "/project-2.jpg",
+    tech: ["Next.js", "Stripe", "Tailwind CSS", "Prisma", "Node.js"],
+    github: "https://github.com",
+    live: "https://example.com",
+    align: "left",
   },
   {
-    title: "SynapseAI",
-    katakana: "シナプスAI",
-    description: "Real-time collaborative AI workspace that enables teams to co-create with machine learning models.",
-    tags: ["Python", "React", "TensorFlow"],
-    server: "Python / FastAPI",
-    status: "Beta",
-    color: "var(--neon-pink)",
+    title: "Social Platform",
+    description:
+      "A social networking application featuring real-time messaging, user profiles, content feeds, and notification systems. Optimized for mobile-first experiences.",
+    image: "/project-3.jpg",
+    tech: ["React", "Socket.io", "Express", "MongoDB", "Redis"],
+    github: "https://github.com",
+    live: "https://example.com",
+    align: "right",
+  },
+];
+
+const otherProjects = [
+  {
+    title: "Weather App",
+    description:
+      "A clean weather application with location-based forecasts, interactive maps, and severe weather alerts.",
+    tech: ["React", "OpenWeather API", "CSS Modules"],
+    github: "https://github.com",
+    live: "https://example.com",
   },
   {
-    title: "VaultNet",
-    katakana: "ヴォルトネット",
-    description: "Zero-knowledge encrypted communications platform with distributed consensus for enterprise security.",
-    tags: ["Rust", "React", "WebRTC"],
-    server: "Rust / Actix",
-    status: "Deployed",
-    color: "var(--neon-cyan)",
+    title: "Task Manager",
+    description:
+      "A minimal yet powerful task management tool with drag-and-drop, labels, and calendar integration.",
+    tech: ["Next.js", "DnD Kit", "Supabase"],
+    github: "https://github.com",
   },
-]
+  {
+    title: "Portfolio Generator",
+    description:
+      "A CLI tool that generates stunning portfolio websites from a simple JSON config file.",
+    tech: ["Node.js", "Handlebars", "CLI"],
+    github: "https://github.com",
+  },
+  {
+    title: "Markdown Editor",
+    description:
+      "A real-time markdown editor with live preview, syntax highlighting, and export options.",
+    tech: ["React", "CodeMirror", "Marked"],
+    github: "https://github.com",
+    live: "https://example.com",
+  },
+  {
+    title: "Budget Tracker",
+    description:
+      "A personal finance tracker with spending categories, charts, and monthly budget goals.",
+    tech: ["Vue.js", "Chart.js", "Firebase"],
+    github: "https://github.com",
+  },
+  {
+    title: "URL Shortener",
+    description:
+      "A fast URL shortener service with custom aliases, click analytics, and QR code generation.",
+    tech: ["Express", "Redis", "React"],
+    github: "https://github.com",
+    live: "https://example.com",
+  },
+];
 
-function ProjectCard({ project, index }) {
-  const cardRef = useRef(null)
-  const [showTerminal, setShowTerminal] = useState(false)
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-
-  const rotateX = useSpring(useTransform(mouseY, [-150, 150], [8, -8]), {
-    stiffness: 300,
-    damping: 30,
-  })
-  const rotateY = useSpring(useTransform(mouseX, [-200, 200], [-8, 8]), {
-    stiffness: 300,
-    damping: 30,
-  })
-
-  function handleMouseMove(e) {
-    const rect = cardRef.current?.getBoundingClientRect()
-    if (!rect) return
-    mouseX.set(e.clientX - rect.left - rect.width / 2)
-    mouseY.set(e.clientY - rect.top - rect.height / 2)
-  }
-
-  function handleMouseLeave() {
-    mouseX.set(0)
-    mouseY.set(0)
-  }
+function FeaturedProject({ project, index, visible }) {
+  const isRight = project.align === "right";
 
   return (
-    <motion.div
-      ref={cardRef}
-      className="relative flex-shrink-0 w-80 md:w-96"
-      style={{ perspective: 1000, rotateX, rotateY }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, x: 50 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.15 }}
+    <div
+      className={`relative grid items-center gap-4 md:grid-cols-12 ${
+        visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+      } transition-all duration-700`}
+      style={{ transitionDelay: `${200 + index * 200}ms` }}
     >
+      {/* Image */}
       <div
-        className="relative glass-strong rounded-2xl overflow-hidden h-full"
-        style={{ border: `1px solid ${project.color}20` }}
+        className={`relative overflow-hidden rounded md:col-span-7 ${
+          isRight ? "md:col-start-1" : "md:col-start-6"
+        } md:row-start-1`}
       >
-        {/* Card header */}
-        <div className="p-6 pb-4">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <p
-                className="text-2xl font-bold mb-0 leading-tight"
-                style={{ color: project.color }}
-              >
-                {project.katakana}
-              </p>
-              <h4 className="text-xl font-bold" style={{ color: "#FFFFFF" }}>
-                {project.title}
-              </h4>
-            </div>
-            <motion.button
-              className="p-2 rounded-lg glass cursor-pointer"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label={`View ${project.title} project`}
-            >
-              <ExternalLink size={16} style={{ color: project.color }} />
-            </motion.button>
-          </div>
+        <a
+          href={project.live}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block"
+        >
+          <div className="absolute inset-0 z-10 bg-background/60 transition-colors duration-300 group-hover:bg-transparent" />
+          <Image
+            src={project.image || "/placeholder.svg"}
+            alt={project.title}
+            width={700}
+            height={400}
+            className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </a>
+      </div>
 
-          <p
-            className="text-sm leading-relaxed mb-4"
-            style={{ color: "rgba(255,255,255,0.6)" }}
+      {/* Content */}
+      <div
+        className={`relative z-20 md:col-span-6 ${
+          isRight ? "md:col-start-7 md:text-right" : "md:col-start-1 md:text-left"
+        } md:row-start-1`}
+      >
+        <p className="mb-1 font-mono text-xs text-primary">Featured Project</p>
+        <h3 className="mb-4 text-xl font-bold text-foreground md:text-2xl">
+          <a
+            href={project.live}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-primary"
           >
+            {project.title}
+          </a>
+        </h3>
+
+        <div className="rounded-lg bg-card/90 p-5 shadow-lg backdrop-blur-sm md:bg-card">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {project.description}
           </p>
+        </div>
 
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1 rounded-full text-xs font-mono font-bold"
-                style={{
-                  background: `${project.color}15`,
-                  color: project.color,
-                  border: `1px solid ${project.color}30`,
-                }}
+        <ul
+          className={`mt-4 flex flex-wrap gap-3 font-mono text-xs text-muted-foreground ${
+            isRight ? "md:justify-end" : "md:justify-start"
+          }`}
+        >
+          {project.tech.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
+
+        <div
+          className={`mt-4 flex items-center gap-4 ${
+            isRight ? "md:justify-end" : "md:justify-start"
+          }`}
+        >
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground transition-colors hover:text-primary"
+              aria-label={`View ${project.title} on GitHub`}
+            >
+              <Github size={20} />
+            </a>
+          )}
+          {project.live && (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground transition-colors hover:text-primary"
+              aria-label={`View ${project.title} live`}
+            >
+              <ExternalLink size={20} />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function OtherProjectCard({ project, index, visible }) {
+  return (
+    <div
+      className={`group flex flex-col justify-between rounded-lg border border-border bg-card p-6 transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 ${
+        visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+      }`}
+      style={{ transitionDelay: `${300 + index * 100}ms` }}
+    >
+      <div>
+        <div className="mb-6 flex items-center justify-between">
+          <Folder size={40} className="text-primary" strokeWidth={1} />
+          <div className="flex items-center gap-3">
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground transition-colors hover:text-primary"
+                aria-label={`View ${project.title} on GitHub`}
               >
-                {tag}
-              </span>
-            ))}
+                <Github size={18} />
+              </a>
+            )}
+            {project.live && (
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground transition-colors hover:text-primary"
+                aria-label={`View ${project.title} live`}
+              >
+                <ExternalLink size={18} />
+              </a>
+            )}
           </div>
         </div>
 
-        {/* Data Terminal */}
-        <motion.button
-          className="w-full px-6 py-3 flex items-center justify-between cursor-pointer"
-          style={{
-            background: "rgba(0,0,0,0.4)",
-            borderTop: "1px solid rgba(255,255,255,0.05)",
-          }}
-          onClick={() => setShowTerminal(!showTerminal)}
-          whileHover={{ background: "rgba(0,0,0,0.6)" }}
-        >
-          <span className="flex items-center gap-2 font-mono text-xs"
-            style={{ color: "var(--neon-cyan)" }}>
-            <Server size={12} />
-            Data Terminal
-          </span>
-          <span className="text-xs font-mono"
-            style={{ color: "rgba(255,255,255,0.4)" }}>
-            {showTerminal ? "[-]" : "[+]"}
-          </span>
-        </motion.button>
-
-        {showTerminal && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="px-6 py-3 font-mono text-xs"
-            style={{ background: "rgba(0,0,0,0.6)" }}
-          >
-            <p style={{ color: "var(--neon-cyan)" }}>
-              Server: {project.server}
-            </p>
-            <p style={{ color: project.status === "Deployed" ? "var(--neon-pink)" : "var(--neon-orange)" }}>
-              Status: {project.status}
-            </p>
-          </motion.div>
-        )}
+        <h3 className="mb-2 text-lg font-semibold text-foreground transition-colors group-hover:text-primary">
+          {project.title}
+        </h3>
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          {project.description}
+        </p>
       </div>
-    </motion.div>
-  )
+
+      <ul className="mt-5 flex flex-wrap gap-2 font-mono text-xs text-muted-foreground">
+        {project.tech.map((t) => (
+          <li key={t}>{t}</li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default function ProjectsSection() {
-  const scrollRef = useRef(null)
+  const ref = useRef(null);
+  const otherRef = useRef(null);
+  const [visible, setVisible] = useState(false);
+  const [otherVisible, setOtherVisible] = useState(false);
 
-  function scroll(direction) {
-    if (!scrollRef.current) return
-    const amount = 420
-    scrollRef.current.scrollBy({
-      left: direction === "left" ? -amount : amount,
-      behavior: "smooth",
-    })
-  }
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.1 }
+    );
+    const otherObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setOtherVisible(true);
+      },
+      { threshold: 0.1 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    if (otherRef.current) otherObserver.observe(otherRef.current);
+    return () => {
+      observer.disconnect();
+      otherObserver.disconnect();
+    };
+  }, []);
 
   return (
-    <section id="projects" className="relative py-32 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+    <section id="projects" ref={ref} className="py-24 px-6 md:py-32">
+      <div className="mx-auto max-w-5xl">
+        <div
+          className={`transition-all duration-700 ${
+            visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          }`}
         >
-          <h2 className="text-sm font-mono uppercase tracking-[0.3em] mb-3"
-            style={{ color: "var(--neon-pink)" }}>
-            // Mission Logs
+          <h2 className="mb-16 flex items-center gap-4 text-2xl font-bold text-foreground md:text-3xl">
+            <span className="font-mono text-lg text-primary md:text-xl">
+              03.
+            </span>
+            Some Things I've Built
+            <span className="h-px flex-1 bg-border" />
           </h2>
-          <h3 className="text-4xl md:text-5xl font-bold"
-            style={{ color: "#FFFFFF" }}>
-            Completed Operations
-          </h3>
-        </motion.div>
-
-        {/* Carousel controls */}
-        <div className="flex justify-end gap-2 mb-6 pr-4">
-          <motion.button
-            onClick={() => scroll("left")}
-            className="p-2 rounded-lg glass cursor-pointer"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Scroll projects left"
-          >
-            <ChevronLeft size={20} style={{ color: "var(--neon-cyan)" }} />
-          </motion.button>
-          <motion.button
-            onClick={() => scroll("right")}
-            className="p-2 rounded-lg glass cursor-pointer"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Scroll projects right"
-          >
-            <ChevronRight size={20} style={{ color: "var(--neon-cyan)" }} />
-          </motion.button>
         </div>
 
-        {/* Carousel */}
-        <div
-          ref={scrollRef}
-          className="flex gap-6 overflow-x-auto pb-6 px-4 snap-x snap-mandatory"
-          style={{
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-            WebkitOverflowScrolling: "touch",
-          }}
-        >
-          {projects.map((project, index) => (
-            <div key={project.title} className="snap-center">
-              <ProjectCard project={project} index={index} />
-            </div>
+        {/* Featured projects */}
+        <div className="flex flex-col gap-24">
+          {featuredProjects.map((project, i) => (
+            <FeaturedProject
+              key={project.title}
+              project={project}
+              index={i}
+              visible={visible}
+            />
           ))}
+        </div>
+
+        {/* Other noteworthy projects */}
+        <div ref={otherRef} className="mt-32">
+          <div
+            className={`mb-10 text-center transition-all duration-700 ${
+              otherVisible
+                ? "translate-y-0 opacity-100"
+                : "translate-y-8 opacity-0"
+            }`}
+          >
+            <h3 className="text-2xl font-bold text-foreground">
+              Other Noteworthy Projects
+            </h3>
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-block font-mono text-sm text-primary transition-colors hover:underline"
+            >
+              view the archive
+            </a>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {otherProjects.map((project, i) => (
+              <OtherProjectCard
+                key={project.title}
+                project={project}
+                index={i}
+                visible={otherVisible}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

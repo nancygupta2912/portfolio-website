@@ -1,27 +1,30 @@
-import { Rajdhani, JetBrains_Mono } from 'next/font/google'
-import './globals.css'
+import { Inter, JetBrains_Mono } from "next/font/google";
+import "./globals.css";
 
-const rajdhani = Rajdhani({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-rajdhani',
-})
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
 const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '700'],
-  variable: '--font-jetbrains',
-})
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+});
 
 export const metadata = {
-  title: 'Priyanka.Dev | Full Stack Architect & Digital Creator',
-  description: 'Cyberpunk-themed portfolio of Priyanka - Senior Full Stack Developer, Technomancer, and Digital Creator. Explore my missions, weaponry, and character stats.',
-}
+  title: "Frontend Developer | Portfolio",
+  description:
+    "Frontend Developer specializing in building exceptional digital experiences. Explore my projects, skills, and get in touch.",
+};
+
+export const viewport = {
+  themeColor: "#0a192f",
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${rajdhani.variable} ${jetbrainsMono.variable}`}>
-      <body className="font-sans antialiased overflow-x-hidden">{children}</body>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+      <body className="font-sans antialiased">{children}</body>
     </html>
-  )
+  );
 }
