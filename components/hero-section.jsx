@@ -47,7 +47,7 @@ export default function HeroSection() {
           }`}
         >
           <h1 className="text-balance text-5xl font-bold leading-tight tracking-tight text-foreground md:text-7xl">
-            Your Name Here.
+            Nancy Gupta.
           </h1>
         </div>
 

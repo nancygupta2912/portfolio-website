@@ -50,7 +50,7 @@ export default function Navigation() {
           href="#"
           className="font-mono text-sm font-bold tracking-tight text-primary transition-colors hover:text-primary/80"
         >
-          {"<Dev />"}
+          {"<NG />"}
         </a>
 
         {/* Desktop nav */}

@@ -12,9 +12,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: "Frontend Developer | Portfolio",
+  title: "Nancy Gupta | Frontend Developer",
   description:
-    "Frontend Developer specializing in building exceptional digital experiences. Explore my projects, skills, and get in touch.",
+    "Nancy Gupta - Frontend Developer specializing in building exceptional digital experiences. Explore my projects, skills, and get in touch.",
 };
 
 export const viewport = {
