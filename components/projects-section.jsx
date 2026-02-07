@@ -6,83 +6,87 @@ import { ExternalLink, Github, Folder } from "lucide-react";
 
 const featuredProjects = [
   {
-    title: "Analytics Dashboard",
+    title: "Food Delivery Website",
     description:
-      "A comprehensive web analytics dashboard with real-time data visualization, custom reporting, and team collaboration features. Built with a focus on performance and accessibility.",
-    image: "/project-1.jpg",
-    tech: ["React", "Next.js", "TypeScript", "D3.js", "PostgreSQL"],
-    github: "https://github.com",
-    live: "https://example.com",
+      "A full-featured, responsive food delivery web application with category-based menu browsing, seamless add-to-cart functionality, and centralized state management using React Context API to ensure consistent, bug-free user experience across the entire platform.",
+    image: "/project-1.png",
+    tech: ["React", "JavaScript", "TailWind CSS"],
+    github: "https://github.com/nancygupta2912/Food-Delivery-App",
+    live: "https://food-delivery-app-c7b8.vercel.app/",
     align: "right",
   },
   {
-    title: "E-Commerce Platform",
+    title: "Real E-State Platform",
     description:
-      "A full-featured online store with product search, cart management, secure checkout, and an admin dashboard. Includes real-time inventory tracking and order management.",
-    image: "/project-2.jpg",
-    tech: ["Next.js", "Stripe", "Tailwind CSS", "Prisma", "Node.js"],
-    github: "https://github.com",
-    live: "https://example.com",
+      "A clean and responsive real estate website designed to showcase property information with a modern UI, smooth navigation, and an intuitive user experience focused on clarity and ease of use.",
+    image: "/project-2.png",
+    tech: ["JavaScript", "Frames", "Tailwind CSS"],
+    github: "https://github.com/nancygupta2912/Real_Estate_Website",
+    live: "https://real-estate-website-amber-two.vercel.app/",
     align: "left",
   },
   {
-    title: "Social Platform",
+    title: "Swacchify",
     description:
-      "A social networking application featuring real-time messaging, user profiles, content feeds, and notification systems. Optimized for mobile-first experiences.",
-    image: "/project-3.jpg",
-    tech: ["React", "Socket.io", "Express", "MongoDB", "Redis"],
-    github: "https://github.com",
-    live: "https://example.com",
+      "A user-friendly city waste management web portal that lets citizens view waste collection schedules, make online payments, access waste facilities, and submit feedback — all designed to simplify and enhance urban waste disposal services.",
+    image: "/project-3.png",
+    tech: ["HTML","CSS", "JavaScript"],
+    github: "https://github.com/nancygupta2912/Swacchify",
+    live: "https://swacchify.vercel.app/",
     align: "right",
   },
 ];
 
+// {
+//     title: "Weather App",
+//     description:
+//       "A clean weather application with location-based forecasts, interactive maps, and severe weather alerts.",
+//     tech: ["React", "OpenWeather API", "CSS Modules"],
+//     github: "https://github.com",
+//     live: "https://example.com",
+//   },
+//   {
+//     title: "Task Manager",
+//     description:
+//       "A minimal yet powerful task management tool with drag-and-drop, labels, and calendar integration.",
+//     tech: ["Next.js", "DnD Kit", "Supabase"],
+//     github: "https://github.com",
+//   },
+
+  // {
+  //   title: "URL Shortener",
+  //   description:
+  //     "A fast URL shortener service with custom aliases, click analytics, and QR code generation.",
+  //   tech: ["Express", "Redis", "React"],
+  //   github: "https://github.com",
+  //   live: "https://example.com",
+  // }
+
+
 const otherProjects = [
+  
   {
-    title: "Weather App",
+    title: "InkWell Scribe",
     description:
-      "A clean weather application with location-based forecasts, interactive maps, and severe weather alerts.",
-    tech: ["React", "OpenWeather API", "CSS Modules"],
-    github: "https://github.com",
-    live: "https://example.com",
+      "A minimal and elegant blogging website focused on seamless content creation and an enjoyable reading experience.",
+    tech: ["React.js", "Tailwind CSS"],
+    github: "https://github.com/nancygupta2912/inkwell-scribe-08",
   },
   {
-    title: "Task Manager",
+    title: "Study Buddy",
     description:
-      "A minimal yet powerful task management tool with drag-and-drop, labels, and calendar integration.",
-    tech: ["Next.js", "DnD Kit", "Supabase"],
-    github: "https://github.com",
+      "A smart study dashboard built to simplify academic planning and improve focus through structured organization and visual clarity.",
+    tech: ["React.js","Tailwind CSS"],
+    github: "https://github.com/nancygupta2912/study-buddy-dash-57",
+    
   },
   {
-    title: "Portfolio Generator",
+    title: "Giving Connect",
     description:
-      "A CLI tool that generates stunning portfolio websites from a simple JSON config file.",
-    tech: ["Node.js", "Handlebars", "CLI"],
-    github: "https://github.com",
-  },
-  {
-    title: "Markdown Editor",
-    description:
-      "A real-time markdown editor with live preview, syntax highlighting, and export options.",
-    tech: ["React", "CodeMirror", "Marked"],
-    github: "https://github.com",
-    live: "https://example.com",
-  },
-  {
-    title: "Budget Tracker",
-    description:
-      "A personal finance tracker with spending categories, charts, and monthly budget goals.",
-    tech: ["Vue.js", "Chart.js", "Firebase"],
-    github: "https://github.com",
-  },
-  {
-    title: "URL Shortener",
-    description:
-      "A fast URL shortener service with custom aliases, click analytics, and QR code generation.",
-    tech: ["Express", "Redis", "React"],
-    github: "https://github.com",
-    live: "https://example.com",
-  },
+      "A donation web platform designed to bridge the gap between donors and NGOs, enabling seamless contribution of goods while promoting social responsibility and community support.",
+    tech: ["React.js","Tailwind CSS"],
+    github: "https://github.com/nancygupta2912/giving-connect",
+  }
 ];
 
 function FeaturedProject({ project, index, visible }) {

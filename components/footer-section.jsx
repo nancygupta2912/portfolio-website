@@ -2,10 +2,11 @@
 
 import { Github, Linkedin, Twitter } from "lucide-react";
 
+
 const socialLinks = [
-  { icon: Github, href: "https://github.com", label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+  { icon: Github, href: "hhttps://github.com/nancygupta2912", label: "GitHub" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/nancygupta29/", label: "LinkedIn" },
+  { icon: Twitter, href: "https://x.com/nancygupta2912", label: "Twitter" },
 ];
 
 export default function FooterSection() {
@@ -37,7 +38,7 @@ export default function FooterSection() {
           >
             <p>Designed & Built with care</p>
             <p className="mt-1 text-muted-foreground/60 transition-colors group-hover:text-primary/60">
-              Built with Next.js & Tailwind CSS
+              @2026 Nancy Gupta
             </p>
           </a>
         </div>

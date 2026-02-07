@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ArrowDown } from "lucide-react";
+import RotatingText from "./RotatingText";
 
 export default function HeroSection() {
   const [visible, setVisible] = useState(false);
@@ -29,9 +30,7 @@ export default function HeroSection() {
       <div className="relative mx-auto max-w-4xl">
         <div
           className={`transition-all duration-700 ${
-            visible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-8 opacity-0"
+            visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <p className="mb-5 font-mono text-sm text-primary md:text-base">
@@ -41,9 +40,7 @@ export default function HeroSection() {
 
         <div
           className={`transition-all duration-700 delay-200 ${
-            visible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-8 opacity-0"
+            visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <h1 className="text-balance text-5xl font-bold leading-tight tracking-tight text-foreground md:text-7xl">
@@ -53,35 +50,33 @@ export default function HeroSection() {
 
         <div
           className={`transition-all duration-700 delay-300 ${
-            visible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-8 opacity-0"
+            visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
-          <h2 className="mt-2 text-balance text-4xl font-bold leading-tight tracking-tight text-muted-foreground md:text-6xl">
-            I build things for the web.
+          <h2 className="mt-2 flex flex-wrap items-center gap-3 text-balance text-4xl font-bold leading-tight tracking-tight text-muted-foreground md:text-6xl">
+            <span>I am</span>
+
+            <span className="relative inline-block w-[18ch] text-foreground">
+              <RotatingText />
+            </span>
           </h2>
         </div>
 
         <div
           className={`transition-all duration-700 delay-500 ${
-            visible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-8 opacity-0"
+            visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            I'm a frontend developer specializing in building exceptional
-            digital experiences. Currently focused on creating accessible,
-            human-centered products with modern web technologies.
+          <p className="mt-6 max-w-xl font-mono text-base leading-relaxed text-muted-foreground md:text-lg">
+            I’m a frontend developer focused on building accessible,
+            user-friendly web applications and solving real-world problems with
+            clean, efficient code.
           </p>
         </div>
 
         <div
           className={`transition-all duration-700 delay-700 ${
-            visible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-8 opacity-0"
+            visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           <a
@@ -177,13 +172,15 @@ export default function HeroSection() {
       {/* Email side */}
       <div className="fixed bottom-0 right-6 hidden flex-col items-center gap-6 after:h-24 after:w-px after:bg-muted-foreground/30 md:flex lg:right-10">
         <a
-          href="mailto:hello@example.com"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=nancygupta2912@gmail.com"
           className="font-mono text-xs tracking-widest text-muted-foreground transition-all duration-200 hover:-translate-y-1 hover:text-primary"
           style={{ writingMode: "vertical-rl" }}
         >
-          hello@example.com
+          nancygupta2912@gmail.com
         </a>
       </div>
     </section>
   );
 }
+
+

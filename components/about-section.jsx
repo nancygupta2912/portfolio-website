@@ -19,14 +19,14 @@ export default function AboutSection() {
   }, []);
 
   const technologies = [
-    "JavaScript (ES6+)",
-    "TypeScript",
+    "C++",
     "React",
-    "Next.js",
+    "JavaScript",
+    "TypeScript",
     "Tailwind CSS",
     "Node.js",
     "Python",
-    "PostgreSQL",
+    "MySQL",
   ];
 
   return (
@@ -56,25 +56,11 @@ export default function AboutSection() {
           >
             <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
               <p>
-                Hello! I'm a passionate frontend developer who loves creating
-                things that live on the internet. My interest in web development
-                started back in 2016 when I decided to try editing custom
-                Tumblr themes -- turns out hacking together a custom reblog
-                button taught me a lot about HTML and CSS.
+                Hello! I’m a passionate developer currently pursuing my B.Tech from Dr. A.P.J. Abdul Kalam Technical University. I love turning ideas into visually appealing, responsive, and user-friendly web experiences.
               </p>
               <p>
-                Fast-forward to today, and I've had the privilege of working at
-                a{" "}
-                <span className="text-primary">start-up</span>,{" "}
-                <span className="text-primary">
-                  a large corporation
-                </span>
-                , and{" "}
-                <span className="text-primary">
-                  a student-led design studio
-                </span>
-                . My main focus these days is building accessible, inclusive
-                products and digital experiences for a variety of clients.
+                I love transforming ideas into clean, intuitive interfaces while exploring new technologies and sharpening my problem-solving skills through data structures and hands-on development. I’m always eager to learn, collaborate, and build impactful products—one line of code at a time.
+                
               </p>
               <p>
                 Here are a few technologies I've been working with recently:
@@ -109,7 +95,7 @@ export default function AboutSection() {
               {/* Image */}
               <div className="relative overflow-hidden rounded">
                 <Image
-                  src="/avatar.jpg"
+                  src="/avatar.jpeg"
                   alt="Profile photo"
                   width={280}
                   height={350}

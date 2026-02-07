@@ -37,11 +37,13 @@ export default function ContactSection() {
         </p>
 
         <a
-          href="mailto:hello@example.com"
-          className="mt-10 inline-flex items-center gap-2 rounded border border-primary px-8 py-4 font-mono text-sm text-primary transition-all duration-200 hover:bg-primary/10"
-        >
-          Say Hello
-        </a>
+  href="https://mail.google.com/mail/?view=cm&fs=1&to=nancygupta2912@gmail.com"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-10 inline-flex items-center gap-2 rounded border border-primary px-8 py-4 font-mono text-sm text-primary transition-all duration-200 hover:bg-primary/10"
+>
+  Say Hello
+</a>
       </div>
     </section>
   );
